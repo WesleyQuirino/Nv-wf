@@ -1,5 +1,5 @@
 <?php
-    $db = "teste";
+    $db = "nvworkflow";
     $host = "localhost";
     $user = "root";
     $pass = "admin";

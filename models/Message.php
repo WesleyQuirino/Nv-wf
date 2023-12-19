@@ -1,5 +1,6 @@
 <?php
-    Class Message{
+    class Message{
+
         private $url;
 
         public function __construct($url){

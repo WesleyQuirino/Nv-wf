@@ -1,6 +1,6 @@
 <?php 
-    require('models/User.php');
-    require('models/Message.php');
+    require_once('models/User.php');
+    require_once('models/Message.php');
 
     class UserDAO implements UserDAOInterface{
         private $conn;

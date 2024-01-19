@@ -3,21 +3,21 @@ CREATE DATABASE IF NOT EXISTS nvworkflow;
 USE nvworkflow;
 
 CREATE TABLE IF NOT EXISTS admin (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY UNIQUE,
     name VARCHAR(100),
     lastname VARCHAR(100),
-    email VARCHAR(200),
+    email VARCHAR(200) UNIQUE,
     password VARCHAR(200),
+    image VARCHAR(200),
     token VARCHAR(200)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS company (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    fantasy_name VARCHAR(100),
-    emalog_inil VARCHAR(200),
-    prefix VARCHAR(200) UNIQUE,
-    cnpj INT(20),
+    name VARCHAR(100) NOT NULL,
+    fantasy_name VARCHAR(100) NOT NULL,
+    prefix VARCHAR(200) UNIQUE NOT NULL,
+    cnpj VARCHAR(14) NOT NULL,
     image VARCHAR(200)
 );
 

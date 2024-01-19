@@ -1,5 +1,6 @@
 <?php 
     require_once('models/User.php');
+    require_once('models/Company.php');
     require_once('models/Message.php');
 
     class UserDAO implements UserDAOInterface{
@@ -24,9 +25,25 @@
             $user->password = $data['password'];
             $user->image = $data['image'];
             $user->token = $data['token'];
-            $user->autorizarions = $data['autorizarions'];
+            $user->authorizations = $data['authorizations'];
 
             return $user;
+        }
+
+        public function buildCompany($data){
+            $company = new Company();
+            
+            $company->id = $data["id"];
+            $company->company_id = $data["company_id"];
+            $company->name = $data['name'];
+            $company->last_name = $data['last_name'];
+            $company->email = $data['email'];
+            $company->password = $data['password'];
+            $company->image = $data['image'];
+            $company->token = $data['token'];
+            $company->authorizations = $data['authorizations'];
+
+            return $company;
         }
 
         public function createUser(User $data, $authUser = false){
@@ -45,7 +62,7 @@
         }
 
         public function updateUser(User $data, $redirect = true){
-            $stmt = $this->conn->prepare("UPDATE users SET name = :name, last_name = :last_name, email = :email, image = :image, token = :token, WHERE id = :id");
+            $stmt = $this->conn->prepare("UPDATE users SET name = :name, last_name = :last_name, email = :email, image = :image, token = :token WHERE id = :id");
             $stmt->bindParam(":id", $data->id);
             $stmt->bindParam(":name", $data->name);
             $stmt->bindParam(":last_name", $data->last_name);
@@ -112,6 +129,27 @@
             }
         }
 
+        public function findCompany($company_id){
+            if($company_id != ""){
+                
+                $stmt = $this->conn->prepare("SELECT * FROM company WHERE id = :id");
+
+                $stmt->bindParam(":id", $company_id);
+
+                $stmt->execute();
+                if($stmt->rowCount() > 0){
+                    $data = $stmt->fetch();
+
+                    $company = $this->buildCompany($data);
+
+                    return $company;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
 
         public function findById($id){
             if($id != ""){
@@ -136,7 +174,7 @@
         public function findByEmail($email){
             if($email != ""){
                 
-                $stmt = $this->conn->prepare("SELECT * FROM user WHERE email = :email");
+                $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email");
 
                 $stmt->bindParam(":email", $email);
 
@@ -173,6 +211,33 @@
                     return false;
                 }
             } else{
+                return false;
+            }
+        }
+
+        public function userAuthorizations($email){
+            if($email != ""){
+                
+                $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email");
+
+                $stmt->bindParam(":email", $email);
+
+                $stmt->execute();
+
+                if($stmt->rowCount() > 0){
+                    $data = $stmt->fetch();
+
+                    $user = $this->buildUser($data);
+
+                    if($user->authorizations === "Admin"){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
                 return false;
             }
         }
